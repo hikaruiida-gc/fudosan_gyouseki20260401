@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G.C FACTORY 不動産事業部 業績報告</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --gcf-navy: #1A2B4A;
+    --gcf-blue: #2563EB;
+    --gcf-teal: #0D9488;
+    --gcf-green: #10B981;
+    --gcf-amber: #F59E0B;
+    --gcf-red: #EF4444;
+    --gcf-purple: #7C3AED;
+    --dark-text: #1A1A2E;
+    --sub-text: #64748B;
+    --caption: #94A3B8;
+    --border: #E2E8F0;
+    --card-bg: #FFFFFF;
+    --page-bg: #F8FAFC;
+    --white: #FFFFFF;
+    --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.12);
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    --radius-full: 9999px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: #E2E8F0;
+    color: var(--dark-text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============================
+     SLIDE CONTAINER
+     ============================ */
+  .slide {
+    width: 1280px;
+    height: 720px;
+    margin: 24px auto;
+    position: relative;
+    overflow: hidden;
+    background: var(--page-bg);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    /* 初期状態：非表示 */
+    opacity: 0;
+    transform: translateY(60px) scale(0.97);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .slide.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .slide-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page-num {
+    position: absolute;
+    bottom: 20px;
+    right: 32px;
+    font-size: 13px;
+    color: var(--caption);
+    z-index: 5;
+    font-weight: 400;
+  }
+  .page-num--white { color: rgba(255,255,255,0.5); }
+
+  /* ============================
+     STAGGER ANIMATION SYSTEM
+     ============================ */
+  .anim-item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .anim-item.anim-scale {
+    transform: translateY(20px) scale(0.92);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .anim-item.anim-left {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  .anim-item.anim-right {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  .slide.is-visible .anim-item.is-animated {
+    opacity: 1;
+    transform: translateY(0) scale(1) translateX(0);
+  }
+
+  /* ============================
+     CARD HOVER EFFECTS
+     ============================ */
+  .hover-lift {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .hover-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .hover-glow {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.35s ease;
+    border: 2px solid transparent;
+  }
+  .hover-glow:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(37, 99, 235, 0.15);
+    border-color: rgba(37, 99, 235, 0.2);
+  }
+
+  /* ============================
+     PROGRESS BAR ANIMATION
+     ============================ */
+  .progress-fill {
+    width: 0 !important;
+    transition: width 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .progress-fill.animate {
+    width: 60% !important;
+  }
+
+  /* ============================
+     COUNTER ANIMATION
+     ============================ */
+  .counter { display: inline; }
+
+  /* ============================
+     PULSE ANIMATION
+     ============================ */
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.4; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+  .pulse-dot {
+    position: relative;
+  }
+  .pulse-dot::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background: inherit;
+    transform-origin: center;
+    animation: pulse-ring 2s ease-out infinite;
+    z-index: -1;
+    margin-top: -50%; margin-left: -50%;
+  }
+
+  /* ============================
+     FLOATING BACKGROUND DECO
+     ============================ */
+  @keyframes float-slow {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-15px, -20px); }
+  }
+  @keyframes float-slow-2 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(12px, 18px); }
+  }
+  .deco-float-1 { animation: float-slow 8s ease-in-out infinite; }
+  .deco-float-2 { animation: float-slow-2 10s ease-in-out infinite; }
+
+  /* ============================
+     FLOW ARROW ANIMATION
+     ============================ */
+  @keyframes flow-pulse {
+    0%, 100% { opacity: 0.4; transform: translateX(0); }
+    50% { opacity: 1; transform: translateX(4px); }
+  }
+  .flow-arrow-anim {
+    animation: flow-pulse 2s ease-in-out infinite;
+    display: inline-block;
+  }
+
+  /* ============================
+     SHINE EFFECT
+     ============================ */
+  @keyframes shine {
+    0% { left: -100%; }
+    100% { left: 200%; }
+  }
+  .shine-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  .shine-effect::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    animation: shine 4s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+
+  /* ============================
+     PIPELINE BAR ANIMATION
+     ============================ */
+  .pipeline-item {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s ease;
+    cursor: default;
+  }
+  .pipeline-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+
+  /* ============================
+     NUMBER HIGHLIGHT BOUNCE
+     ============================ */
+  @keyframes bounce-in {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .bounce-in {
+    animation: bounce-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* ============================
+     CHALLENGE CARD ENTRANCE
+     ============================ */
+  .challenge-card {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s ease;
+  }
+  .challenge-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+  }
+
+  /* ============================
+     TOOLTIP ON KPI
+     ============================ */
+  .kpi-card {
+    cursor: default;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s ease;
+  }
+  .kpi-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* ============================
+     COVER ANIMATIONS
+     ============================ */
+  @keyframes fade-up-cover {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in-scale {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .slide--cover.is-visible .cover-label {
+    animation: fade-up-cover 0.7s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .slide--cover.is-visible .cover-title {
+    animation: fade-up-cover 0.8s 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .slide--cover.is-visible .cover-sub {
+    animation: fade-up-cover 0.7s 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .slide--cover.is-visible .cover-meta {
+    animation: fade-up-cover 0.7s 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .slide--cover .cover-label,
+  .slide--cover .cover-title,
+  .slide--cover .cover-sub,
+  .slide--cover .cover-meta { opacity: 0; }
+
+  .cover-deco {
+    transition: transform 0.6s ease;
+  }
+  .slide--cover.is-visible .cover-deco {
+    animation: fade-in-scale 1.2s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* ============================
+     DISCOUNT ITEM HOVER
+     ============================ */
+  .discount-item {
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+  .discount-item:hover {
+    transform: translateX(8px);
+    background: #EFF6FF;
+  }
+
+  /* ============================
+     REFERRAL TARGET ITEM
+     ============================ */
+  .referral-target-item {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .referral-target-item:hover {
+    transform: translateX(6px);
+  }
+
+  /* ========================================
+     ALL ORIGINAL LAYOUT STYLES BELOW
+     ======================================== */
+  .slide--cover {
+    background: linear-gradient(135deg, var(--gcf-navy) 0%, #0F172A 100%);
+  }
+  .cover-deco {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 80px solid rgba(37, 99, 235, 0.08);
+    top: -200px; right: -100px;
+    z-index: 1;
+  }
+  .cover-deco2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    border: 60px solid rgba(13, 148, 136, 0.06);
+    bottom: -150px; left: -80px;
+    z-index: 1;
+  }
+  .cover-content {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 0 100px;
+  }
+  .cover-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(37, 99, 235, 0.15);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    border-radius: var(--radius-full);
+    padding: 6px 20px;
+    font-size: 13px; font-weight: 500;
+    color: #93C5FD; letter-spacing: 0.08em;
+    margin-bottom: 32px; width: fit-content;
+  }
+  .cover-label::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--gcf-blue);
+    border-radius: 50%;
+  }
+  .cover-title {
+    font-size: 52px; font-weight: 900;
+    color: var(--white); line-height: 1.3;
+    letter-spacing: -0.02em; margin-bottom: 16px;
+  }
+  .cover-title span {
+    background: linear-gradient(90deg, #60A5FA, #34D399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .cover-sub {
+    font-size: 18px; color: #94A3B8;
+    font-weight: 400; margin-bottom: 40px;
+  }
+  .cover-meta {
+    display: flex; gap: 24px;
+    font-size: 14px; color: #64748B;
+  }
+  .cover-meta-item {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.05);
+    padding: 8px 16px; border-radius: var(--radius-sm);
+  }
+
+  .slide--summary { background: var(--page-bg); }
+
+  .section-header { padding: 48px 80px 0; }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-tag--blue { color: var(--gcf-blue); }
+  .section-tag--teal { color: var(--gcf-teal); }
+  .section-tag--amber { color: var(--gcf-amber); }
+  .section-tag--red { color: var(--gcf-red); }
+  .section-tag--green { color: var(--gcf-green); }
+  .section-tag--purple { color: var(--gcf-purple); }
+  .section-tag--navy { color: var(--gcf-navy); }
+
+  .section-title {
+    font-size: 36px; font-weight: 900;
+    color: var(--dark-text); line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+  .section-subtitle {
+    font-size: 16px; color: var(--sub-text);
+    font-weight: 400; margin-top: 8px;
+  }
+
+  .kpi-row {
+    display: flex; gap: 20px; padding: 32px 80px 0;
+  }
+  .kpi-card {
+    flex: 1;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 28px 24px;
+    position: relative; overflow: hidden;
+  }
+  .kpi-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 4px;
+  }
+  .kpi-card--blue::before { background: linear-gradient(90deg, #3B82F6, #60A5FA); }
+  .kpi-card--teal::before { background: linear-gradient(90deg, #0D9488, #2DD4BF); }
+  .kpi-card--amber::before { background: linear-gradient(90deg, #F59E0B, #FBBF24); }
+  .kpi-card--red::before { background: linear-gradient(90deg, #EF4444, #F87171); }
+
+  .kpi-label {
+    font-size: 13px; color: var(--sub-text);
+    font-weight: 500; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .kpi-label svg {
+    width: 14px; height: 14px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+  .kpi-value {
+    font-size: 40px; font-weight: 900;
+    letter-spacing: -0.03em; line-height: 1.1;
+  }
+  .kpi-value--blue { color: var(--gcf-blue); }
+  .kpi-value--teal { color: var(--gcf-teal); }
+  .kpi-value--amber { color: var(--gcf-amber); }
+  .kpi-value--red { color: var(--gcf-red); }
+  .kpi-unit { font-size: 16px; font-weight: 500; margin-left: 2px; }
+  .kpi-sub { font-size: 13px; color: var(--sub-text); margin-top: 6px; }
+
+  .progress-section { padding: 24px 80px 0; }
+  .progress-bar-wrap {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 24px 28px;
+  }
+  .progress-header {
+    display: flex; justify-content: space-between;
+    align-items: baseline; margin-bottom: 12px;
+  }
+  .progress-label { font-size: 14px; font-weight: 700; color: var(--dark-text); }
+  .progress-pct { font-size: 28px; font-weight: 900; color: var(--gcf-blue); }
+  .progress-track {
+    width: 100%; height: 16px;
+    background: #E2E8F0;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: var(--radius-full);
+    background: linear-gradient(90deg, var(--gcf-blue), var(--gcf-teal));
+  }
+  .progress-legend {
+    display: flex; justify-content: space-between;
+    margin-top: 8px; font-size: 12px; color: var(--caption);
+  }
+
+  .pipeline-section { padding: 20px 80px 0; }
+  .pipeline-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 20px 28px;
+  }
+  .pipeline-title {
+    font-size: 14px; font-weight: 700;
+    color: var(--dark-text); margin-bottom: 12px;
+  }
+  .pipeline-items { display: flex; gap: 12px; }
+  .pipeline-item {
+    flex: 1; padding: 12px 16px;
+    border-radius: var(--radius-md); text-align: center;
+  }
+  .pipeline-item--c { background: #FEF3C7; }
+  .pipeline-item--empty { background: #F1F5F9; }
+  .pipeline-rank { font-size: 20px; font-weight: 900; margin-bottom: 2px; }
+  .pipeline-rank--c { color: var(--gcf-amber); }
+  .pipeline-rank--empty { color: var(--caption); }
+  .pipeline-rate { font-size: 11px; color: var(--sub-text); }
+
+  .strategy-body {
+    display: flex; gap: 24px; padding: 28px 80px 0; flex: 1;
+  }
+  .strategy-main {
+    flex: 2; display: flex; flex-direction: column; gap: 16px;
+  }
+  .strategy-side {
+    flex: 1; display: flex; flex-direction: column; gap: 16px;
+  }
+  .strategy-hero {
+    background: linear-gradient(135deg, var(--gcf-blue), #1D4ED8);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px; color: var(--white);
+    position: relative; overflow: hidden;
+  }
+  .strategy-hero::after {
+    content: '';
+    position: absolute; top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 30px solid rgba(255,255,255,0.06);
+  }
+  .strategy-hero-label {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; opacity: 0.7; margin-bottom: 8px;
+  }
+  .strategy-hero-title {
+    font-size: 24px; font-weight: 900;
+    line-height: 1.4; margin-bottom: 12px;
+  }
+  .strategy-hero-reason {
+    font-size: 14px; line-height: 1.7; opacity: 0.9;
+  }
+
+  .compare-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 20px 24px; flex: 1;
+  }
+  .compare-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+  }
+  .compare-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .compare-name { font-size: 14px; font-weight: 700; color: var(--dark-text); }
+  .compare-desc { font-size: 13px; color: var(--sub-text); line-height: 1.6; }
+  .compare-metrics { display: flex; gap: 16px; margin-top: 10px; }
+  .compare-metric {
+    font-size: 12px; padding: 4px 10px;
+    border-radius: var(--radius-full); font-weight: 500;
+  }
+  .compare-metric--warning { background: #FEF3C7; color: #92400E; }
+  .compare-metric--danger { background: #FEE2E2; color: #991B1B; }
+  .compare-metric--info { background: #E0F2FE; color: #075985; }
+
+  .loss-card {
+    background: linear-gradient(135deg, #FEF2F2, #FFF1F2);
+    border: 1px solid #FECACA;
+    border-radius: var(--radius-lg); padding: 20px 24px;
+  }
+  .loss-card-title {
+    font-size: 13px; font-weight: 700;
+    color: var(--gcf-red); margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .loss-card-value {
+    font-size: 28px; font-weight: 900; color: var(--gcf-red);
+  }
+  .loss-card-desc {
+    font-size: 12px; color: #991B1B; margin-top: 4px;
+  }
+
+  .status-body {
+    display: flex; gap: 24px; padding: 28px 80px 0; flex: 1;
+  }
+  .status-col { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+  .status-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 24px; flex: 1;
+  }
+  .status-card-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+  }
+  .status-icon {
+    width: 44px; height: 44px;
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: white;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .status-icon::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+  .status-icon--blue {
+    background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  }
+  .status-icon--teal {
+    background: linear-gradient(135deg, #14B8A6, #0D7363);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.35);
+  }
+  .status-icon--green {
+    background: linear-gradient(135deg, #34D399, #059669);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+  }
+  .status-icon--purple {
+    background: linear-gradient(135deg, #A78BFA, #6D28D9);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+  }
+  .status-icon:hover {
+    transform: scale(1.1) rotate(-3deg);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .status-icon svg {
+    width: 22px; height: 22px;
+    stroke: white;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+  }
+
+  /* Section tag inline SVG */
+  .section-tag svg {
+    width: 16px; height: 16px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    vertical-align: -2px;
+  }
+  .cover-meta-item svg {
+    width: 15px; height: 15px;
+    stroke: #64748B;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    vertical-align: -2px;
+    flex-shrink: 0;
+  }
+  .loss-card-title svg {
+    width: 15px; height: 15px;
+    stroke: var(--gcf-red);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    vertical-align: -2px;
+  }
+  .discount-card-title svg {
+    width: 17px; height: 17px;
+    stroke: var(--gcf-blue);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    vertical-align: -3px;
+  }
+  .status-card-title { font-size: 16px; font-weight: 700; }
+  .status-card-body { font-size: 13px; color: var(--sub-text); line-height: 1.8; }
+  .status-highlight {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #EFF6FF; color: var(--gcf-blue);
+    padding: 3px 10px; border-radius: var(--radius-full);
+    font-size: 12px; font-weight: 700; margin: 4px 4px 4px 0;
+  }
+  .status-highlight--green { background: #ECFDF5; color: var(--gcf-green); }
+  .status-highlight--amber { background: #FEF3C7; color: #92400E; }
+
+  .slide--challenge {
+    background: linear-gradient(135deg, var(--gcf-amber), #D97706);
+  }
+  .challenge-content {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column;
+    height: 100%; padding: 56px 80px;
+  }
+  .challenge-title {
+    font-size: 40px; font-weight: 900;
+    color: var(--white); margin-bottom: 8px;
+  }
+  .challenge-sub {
+    font-size: 16px; color: rgba(255,255,255,0.8); margin-bottom: 36px;
+  }
+  .challenge-cards { display: flex; gap: 20px; flex: 1; }
+  .challenge-card {
+    flex: 1;
+    background: rgba(255,255,255,0.95);
+    border-radius: var(--radius-lg); padding: 28px;
+    display: flex; flex-direction: column;
+  }
+  .challenge-card-num {
+    font-size: 48px; font-weight: 900;
+    color: var(--gcf-amber); opacity: 0.3;
+    margin-bottom: 4px; line-height: 1;
+  }
+  .challenge-card-title {
+    font-size: 18px; font-weight: 700;
+    color: var(--dark-text); margin-bottom: 10px;
+  }
+  .challenge-card-body {
+    font-size: 14px; color: var(--sub-text);
+    line-height: 1.8; flex: 1;
+  }
+  .challenge-card-tag {
+    display: inline-flex; padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-size: 12px; font-weight: 700;
+    margin-top: 12px; width: fit-content;
+  }
+  .challenge-card-tag--red { background: #FEE2E2; color: #991B1B; }
+  .challenge-card-tag--amber { background: #FEF3C7; color: #92400E; }
+
+  .slide--direction {
+    background: linear-gradient(135deg, var(--gcf-teal), #047857);
+  }
+  .direction-content {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column;
+    height: 100%; padding: 56px 80px;
+  }
+  .direction-title {
+    font-size: 40px; font-weight: 900;
+    color: var(--white); margin-bottom: 8px;
+  }
+  .direction-sub {
+    font-size: 16px; color: rgba(255,255,255,0.8); margin-bottom: 32px;
+  }
+  .direction-body { display: flex; gap: 20px; flex: 1; }
+  .direction-main {
+    flex: 3; display: flex; flex-direction: column; gap: 16px;
+  }
+  .direction-side { flex: 2; }
+  .direction-card {
+    background: rgba(255,255,255,0.95);
+    border-radius: var(--radius-lg); padding: 24px 28px; flex: 1;
+  }
+  .direction-card-label {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; color: var(--gcf-teal); margin-bottom: 6px;
+  }
+  .direction-card-title {
+    font-size: 18px; font-weight: 700;
+    color: var(--dark-text); margin-bottom: 8px;
+  }
+  .direction-card-body {
+    font-size: 14px; color: var(--sub-text); line-height: 1.7;
+  }
+  .direction-stats {
+    background: rgba(255,255,255,0.95);
+    border-radius: var(--radius-lg); padding: 28px;
+    height: 100%; display: flex; flex-direction: column;
+    justify-content: center; gap: 20px;
+  }
+  .direction-stat { text-align: center; }
+  .direction-stat-label {
+    font-size: 13px; color: var(--sub-text); margin-bottom: 4px;
+  }
+  .direction-stat-value {
+    font-size: 36px; font-weight: 900; letter-spacing: -0.02em;
+  }
+  .direction-stat-value--teal { color: var(--gcf-teal); }
+  .direction-stat-value--blue { color: var(--gcf-blue); }
+  .direction-stat-sub { font-size: 12px; color: var(--caption); }
+  .direction-stat-divider {
+    width: 60px; height: 2px; background: var(--border); margin: 0 auto;
+  }
+
+  .slide--referral {
+    background: linear-gradient(135deg, var(--gcf-navy), #0F172A);
+  }
+  .referral-content {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column;
+    height: 100%; padding: 56px 80px;
+  }
+  .referral-title {
+    font-size: 40px; font-weight: 900;
+    color: var(--white); margin-bottom: 8px;
+  }
+  .referral-sub {
+    font-size: 16px; color: rgba(255,255,255,0.7); margin-bottom: 32px;
+  }
+  .referral-body { display: flex; gap: 20px; flex: 1; }
+  .referral-main { flex: 3; }
+  .referral-side { flex: 2; display: flex; flex-direction: column; gap: 16px; }
+
+  .discount-card {
+    background: rgba(255,255,255,0.95);
+    border-radius: var(--radius-lg); padding: 28px 32px; height: 100%;
+  }
+  .discount-card-title {
+    font-size: 16px; font-weight: 700;
+    color: var(--dark-text); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .discount-items { display: flex; flex-direction: column; gap: 14px; }
+  .discount-item {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 20px; border-radius: var(--radius-md);
+    background: #F8FAFC;
+  }
+  .discount-badge {
+    font-size: 24px; font-weight: 900;
+    color: var(--gcf-blue); white-space: nowrap;
+    min-width: 100px; text-align: center;
+  }
+  .discount-desc { font-size: 14px; color: var(--dark-text); font-weight: 500; }
+  .discount-note { font-size: 12px; color: var(--caption); margin-top: 2px; }
+
+  .referral-fee-card {
+    background: linear-gradient(135deg, var(--gcf-blue), #1D4ED8);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px; color: white;
+    text-align: center; display: flex;
+    flex-direction: column; justify-content: center;
+  }
+  .referral-fee-label { font-size: 13px; opacity: 0.8; margin-bottom: 6px; }
+  .referral-fee-value { font-size: 48px; font-weight: 900; }
+  .referral-fee-note { font-size: 13px; opacity: 0.7; margin-top: 4px; }
+
+  .referral-target-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px; color: white;
+  }
+  .referral-target-title {
+    font-size: 14px; font-weight: 700;
+    margin-bottom: 10px; opacity: 0.9;
+  }
+  .referral-target-list { display: flex; flex-direction: column; gap: 8px; }
+  .referral-target-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 14px; opacity: 0.85;
+  }
+  .referral-target-item::before {
+    content: '✓';
+    width: 22px; height: 22px;
+    background: rgba(16, 185, 129, 0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: #34D399; flex-shrink: 0;
+  }
+
+  .flow-row {
+    display: flex; align-items: center; gap: 8px; margin: 8px 0;
+  }
+  .flow-node {
+    padding: 6px 14px; border-radius: var(--radius-full);
+    font-size: 12px; font-weight: 600; white-space: nowrap;
+  }
+  .flow-node--blue { background: #DBEAFE; color: #1E40AF; }
+  .flow-node--teal { background: #CCFBF1; color: #065F46; }
+  .flow-node--green { background: #D1FAE5; color: #065F46; }
+
+  .color-slide-deco {
+    position: absolute; z-index: 1; pointer-events: none;
+  }
+  .color-slide-deco--1 {
+    width: 500px; height: 500px; border-radius: 50%;
+    border: 80px solid rgba(255,255,255,0.04);
+    top: -200px; right: -100px;
+  }
+  .color-slide-deco--2 {
+    width: 350px; height: 350px; border-radius: 50%;
+    border: 50px solid rgba(255,255,255,0.03);
+    bottom: -120px; left: -80px;
+  }
+
+  /* ============================
+     SCROLL NAV
+     ============================ */
+  .scroll-nav {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .scroll-nav-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.15);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .scroll-nav-dot:hover {
+    background: rgba(0,0,0,0.3);
+    transform: scale(1.3);
+  }
+  .scroll-nav-dot.active {
+    background: var(--gcf-blue);
+    border-color: var(--white);
+    transform: scale(1.3);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.3);
+  }
+</style>
+</head>
+<body>
+
+<!-- SCROLL NAVIGATION -->
+<nav class="scroll-nav" id="scrollNav"></nav>
+
+<!-- ===========================
+     SLIDE 1: COVER
+     =========================== -->
+<div class="slide slide--cover" data-slide="0">
+  <div class="cover-deco deco-float-1"></div>
+  <div class="cover-deco2 deco-float-2"></div>
+  <div class="cover-content">
+    <div class="cover-label">INTERNAL REPORT</div>
+    <h1 class="cover-title">不動産事業部<br><span>業績報告</span></h1>
+    <p class="cover-sub">今期実績サマリーと今後の戦略方針</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 2025年度 3月末時点</div>
+      <div class="cover-meta-item"><svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/></svg> G.C FACTORY 不動産事業部</div>
+    </div>
+  </div>
+  <span class="page-num page-num--white">1</span>
+</div>
+
+<!-- ===========================
+     SLIDE 2: EXECUTIVE SUMMARY
+     =========================== -->
+<div class="slide slide--summary" data-slide="1">
+  <div class="section-header anim-item" data-delay="0">
+    <div class="section-tag section-tag--blue"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> EXECUTIVE SUMMARY</div>
+    <h2 class="section-title">今期実績サマリー</h2>
+    <p class="section-subtitle">目標売上に対する進捗と、4月以降のパイプライン状況</p>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card kpi-card--blue hover-lift anim-item anim-scale" data-delay="100">
+      <div class="kpi-label"><svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>今期 目標売上</div>
+      <div class="kpi-value kpi-value--blue"><span class="counter" data-target="3500">0</span><span class="kpi-unit">万円</span></div>
+    </div>
+    <div class="kpi-card kpi-card--teal hover-lift anim-item anim-scale" data-delay="200">
+      <div class="kpi-label"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>3月末時点 実績</div>
+      <div class="kpi-value kpi-value--teal"><span class="counter" data-target="2088">0</span><span class="kpi-unit">万円</span></div>
+    </div>
+    <div class="kpi-card kpi-card--amber hover-lift anim-item anim-scale" data-delay="300">
+      <div class="kpi-label"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>残り必要額</div>
+      <div class="kpi-value kpi-value--amber"><span class="counter" data-target="1412">0</span><span class="kpi-unit">万円</span></div>
+    </div>
+    <div class="kpi-card kpi-card--red hover-lift anim-item anim-scale" data-delay="400">
+      <div class="kpi-label"><svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>Sランク失注</div>
+      <div class="kpi-value kpi-value--red"><span class="counter" data-target="600">0</span><span class="kpi-unit">万円</span></div>
+      <div class="kpi-sub">300万円(税抜) × 2件</div>
+    </div>
+  </div>
+
+  <div class="progress-section anim-item" data-delay="500">
+    <div class="progress-bar-wrap">
+      <div class="progress-header">
+        <span class="progress-label">目標達成率</span>
+        <span class="progress-pct"><span class="counter" data-target="60" data-suffix="%">0</span></span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-legend">
+        <span>0万円</span>
+        <span>2,088万円（現在）</span>
+        <span>3,500万円（目標）</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pipeline-section anim-item" data-delay="600">
+    <div class="pipeline-card">
+      <div class="pipeline-title">4月以降のパイプライン（申込中案件：4件）</div>
+      <div class="pipeline-items">
+        <div class="pipeline-item pipeline-item--empty">
+          <div class="pipeline-rank pipeline-rank--empty">S</div>
+          <div class="pipeline-rate">成約角度 95%</div>
+          <div class="pipeline-rate" style="font-weight:700;">0件</div>
+        </div>
+        <div class="pipeline-item pipeline-item--empty">
+          <div class="pipeline-rank pipeline-rank--empty">A</div>
+          <div class="pipeline-rate">成約角度 80%</div>
+          <div class="pipeline-rate" style="font-weight:700;">0件</div>
+        </div>
+        <div class="pipeline-item pipeline-item--empty">
+          <div class="pipeline-rank pipeline-rank--empty">B</div>
+          <div class="pipeline-rate">成約角度 60%</div>
+          <div class="pipeline-rate" style="font-weight:700;">0件</div>
+        </div>
+        <div class="pipeline-item pipeline-item--c">
+          <div class="pipeline-rank pipeline-rank--c">C</div>
+          <div class="pipeline-rate">成約角度 40%</div>
+          <div class="pipeline-rate" style="font-weight:700; color:#92400E;">1件</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">2</span>
+</div>
+
+<!-- ===========================
+     SLIDE 3: FOCUS STRATEGY
+     =========================== -->
+<div class="slide" style="background: var(--page-bg);" data-slide="2">
+  <div class="section-header anim-item" data-delay="0">
+    <div class="section-tag section-tag--blue"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg> STRATEGIC FOCUS</div>
+    <h2 class="section-title">注力方針と戦略的理由</h2>
+    <p class="section-subtitle">残期間での目標達成に向けた最優先アクション</p>
+  </div>
+
+  <div class="strategy-body">
+    <div class="strategy-main">
+      <div class="strategy-hero shine-effect anim-item anim-left" data-delay="150">
+        <div class="strategy-hero-label">最優先注力領域</div>
+        <div class="strategy-hero-title">中古マンションの<br>購入仲介</div>
+        <div class="strategy-hero-reason">
+          客単価が高く、工数やリスクのバランスが良いため、<br>
+          短期間での成約が見込める唯一の領域です。
+        </div>
+      </div>
+
+      <div style="display:flex; gap:16px;">
+        <div class="compare-card hover-glow anim-item anim-scale" data-delay="300">
+          <div class="compare-header">
+            <div class="compare-dot" style="background:var(--gcf-amber)"></div>
+            <div class="compare-name">医療モール誘致</div>
+          </div>
+          <div class="compare-desc">ドクター誘致単価は高額だが、成約までの期間が非常に長い</div>
+          <div class="compare-metrics">
+            <span class="compare-metric compare-metric--warning">単価 200〜300万円</span>
+            <span class="compare-metric compare-metric--danger">期間：長期</span>
+          </div>
+        </div>
+        <div class="compare-card hover-glow anim-item anim-scale" data-delay="400">
+          <div class="compare-header">
+            <div class="compare-dot" style="background:var(--gcf-red)"></div>
+            <div class="compare-name">賃貸仲介（事業用・住居用）</div>
+          </div>
+          <div class="compare-desc">提案から成約までの効率が低く、残期間での挽回が困難</div>
+          <div class="compare-metrics">
+            <span class="compare-metric compare-metric--danger">成約率 約2.3%</span>
+            <span class="compare-metric compare-metric--info">単価：低〜中</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-side">
+      <div class="loss-card anim-item anim-right" data-delay="200">
+        <div class="loss-card-title"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> 直近の失注インパクト</div>
+        <div class="loss-card-value">-<span class="counter" data-target="600">0</span>万円</div>
+        <div class="loss-card-desc">Sランク案件 300万円(税抜) × 2件の失注が発生。予算達成への影響大。</div>
+      </div>
+      <div class="compare-card hover-glow anim-item anim-right" data-delay="350" style="flex:1;">
+        <div class="compare-header">
+          <div class="compare-dot" style="background:var(--gcf-teal)"></div>
+          <div class="compare-name">その他（付随対応）</div>
+        </div>
+        <div class="compare-desc">居抜き譲渡・内装業者紹介など、メイン業務に付随するニーズとして対応。独立した注力領域とはしない。</div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">3</span>
+</div>
+
+<!-- ===========================
+     SLIDE 4: STATUS ANALYSIS
+     =========================== -->
+<div class="slide" style="background: var(--page-bg);" data-slide="3">
+  <div class="section-header anim-item" data-delay="0">
+    <div class="section-tag section-tag--teal"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> STATUS ANALYSIS</div>
+    <h2 class="section-title">これまでの取り組みと成果</h2>
+    <p class="section-subtitle">コンサルタント個人に依存しない仕組みの構築</p>
+  </div>
+
+  <div class="status-body">
+    <div class="status-col">
+      <div class="status-card hover-lift anim-item anim-scale" data-delay="100">
+        <div class="status-card-header">
+          <div class="status-icon status-icon--blue"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <div class="status-card-title">SEO基盤の構築</div>
+        </div>
+        <div class="status-card-body">
+          物件情報掲載を燃料としたSEOにより、安定したリード獲得ルートを確立。コンサルタントの能力に依存しない案件供給網を実現。
+          <div style="margin-top:10px;">
+            <span class="status-highlight">月平均 新規問い合わせ 5件</span>
+            <span class="status-highlight--green status-highlight">「クリニック・不動産」2位維持</span>
+          </div>
+        </div>
+      </div>
+      <div class="status-card hover-lift anim-item anim-scale" data-delay="250">
+        <div class="status-card-header">
+          <div class="status-icon status-icon--teal"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="status-card-title">アライアンス基盤</div>
+        </div>
+        <div class="status-card-body">
+          調剤薬局・スーパー・ディベロッパー等と連携基盤を構築。
+          <div style="margin-top:10px;">
+            <span class="status-highlight">提携薬局数 <span class="counter" data-target="43">0</span>社</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="status-col">
+      <div class="status-card hover-lift anim-item anim-scale" data-delay="200">
+        <div class="status-card-header">
+          <div class="status-icon status-icon--green"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          <div class="status-card-title">トスアップフロー</div>
+        </div>
+        <div class="status-card-body">
+          不動産HPを起点とした有料開業支援・会計顧問へのトスアップフローも一定機能。
+          <div style="margin-top:10px;">
+            <span class="status-highlight">トスアップ <span class="counter" data-target="19">0</span>件</span>
+            <span class="status-highlight--green status-highlight">受注 4件（成約率約21%）</span>
+          </div>
+          <div style="margin-top:12px;">
+            <div class="flow-row">
+              <span class="flow-node flow-node--blue">不動産HP</span>
+              <span class="flow-arrow-anim">→</span>
+              <span class="flow-node flow-node--teal">開業支援</span>
+              <span class="flow-arrow-anim" style="animation-delay:0.3s">→</span>
+              <span class="flow-node flow-node--green">会計顧問</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="status-card hover-lift anim-item anim-scale" data-delay="350" style="background: linear-gradient(135deg, #F0F9FF, #F8FAFC);">
+        <div class="status-card-header">
+          <div class="status-icon status-icon--purple"><svg viewBox="0 0 24 24"><path d="M20 12v10H4V12"/><rect x="2" y="7" width="20" height="5" rx="1"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
+          <div class="status-card-title">顧問先ドクターへの優待</div>
+        </div>
+        <div class="status-card-body">
+          紹介による案件獲得チャネルとして、顧問先ドクター向けに特別割引を提供中。
+          <div style="margin-top:10px;">
+            <span class="status-highlight">住居賃貸 50% OFF</span>
+            <span class="status-highlight">購入仲介 10% OFF</span>
+            <span class="status-highlight--amber status-highlight">紹介料 20%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">4</span>
+</div>
+
+<!-- ===========================
+     SLIDE 5: CHALLENGES
+     =========================== -->
+<div class="slide slide--challenge" data-slide="4">
+  <div class="color-slide-deco color-slide-deco--1 deco-float-1"></div>
+  <div class="color-slide-deco color-slide-deco--2 deco-float-2"></div>
+  <div class="challenge-content">
+    <h2 class="challenge-title anim-item" data-delay="0">直面している課題</h2>
+    <p class="challenge-sub anim-item" data-delay="100">物件情報獲得チャネルの飽和と、横の拡大の限界</p>
+
+    <div class="challenge-cards">
+      <div class="challenge-card anim-item anim-scale" data-delay="200">
+        <div class="challenge-card-num">01</div>
+        <div class="challenge-card-title">チャネルの飽和</div>
+        <div class="challenge-card-body">
+          物件情報獲得のチャネルが飽和状態に。主要プレイヤー（薬局・ディベロッパー等）との連携がほぼ完了しており、新規提携先の開拓余地が限定的。
+        </div>
+        <span class="challenge-card-tag challenge-card-tag--red">横の拡大に限界</span>
+      </div>
+      <div class="challenge-card anim-item anim-scale" data-delay="350">
+        <div class="challenge-card-num">02</div>
+        <div class="challenge-card-title">SEO燃料の枯渇リスク</div>
+        <div class="challenge-card-body">
+          SEOの燃料となる物件情報獲得が伸び悩んでいる。これ以上の「横の拡大（新規提携）」では大幅な成長が見込めない構造的な課題。
+        </div>
+        <span class="challenge-card-tag challenge-card-tag--amber">成長モデルの転換が必要</span>
+      </div>
+      <div class="challenge-card anim-item anim-scale" data-delay="500">
+        <div class="challenge-card-num">03</div>
+        <div class="challenge-card-title">パイプラインの脆弱性</div>
+        <div class="challenge-card-body">
+          4月以降のパイプラインにS/A/Bランク案件がゼロ。Cランク1件のみという状況は、短期的な売上見通しにリスクを抱えている。
+        </div>
+        <span class="challenge-card-tag challenge-card-tag--red">高確度案件が不在</span>
+      </div>
+    </div>
+  </div>
+  <span class="page-num page-num--white">5</span>
+</div>
+
+<!-- ===========================
+     SLIDE 6: FUTURE DIRECTION
+     =========================== -->
+<div class="slide slide--direction" data-slide="5">
+  <div class="color-slide-deco color-slide-deco--1 deco-float-1"></div>
+  <div class="color-slide-deco color-slide-deco--2 deco-float-2"></div>
+  <div class="direction-content">
+    <h2 class="direction-title anim-item" data-delay="0">今後の方向性</h2>
+    <p class="direction-sub anim-item" data-delay="100">循環型オーガニックグロースモデルへの転換と、足元の打開策</p>
+
+    <div class="direction-body">
+      <div class="direction-main">
+        <div class="direction-card anim-item anim-left" data-delay="200" style="flex:1;">
+          <div class="direction-card-label">中長期戦略</div>
+          <div class="direction-card-title">循環型オーガニックグロースモデル</div>
+          <div class="direction-card-body">
+            ROIの観点から開業支援件数を増加させ、会計顧問先を増やし、そこから一定の需要を取り込んでいく循環型のオーガニックなグロースモデルが望ましい。
+          </div>
+          <div style="margin-top:14px;">
+            <div class="flow-row">
+              <span class="flow-node flow-node--blue">開業支援 増加</span>
+              <span class="flow-arrow-anim">→</span>
+              <span class="flow-node flow-node--teal">会計顧問先 拡大</span>
+              <span class="flow-arrow-anim" style="animation-delay:0.3s">→</span>
+              <span class="flow-node flow-node--green">不動産需要 獲得</span>
+            </div>
+          </div>
+        </div>
+        <div class="direction-card anim-item anim-left" data-delay="350" style="flex:1;">
+          <div class="direction-card-label">短期打開策</div>
+          <div class="direction-card-title">非公開物件のメルマガ個別提案</div>
+          <div class="direction-card-body">
+            非公開物件のメルマガ個別提案で物件マッチングを促進。ドクターごとの希望条件に合わせたOne to Oneの提案により、成約率の向上を狙う。
+          </div>
+        </div>
+      </div>
+
+      <div class="direction-side anim-item anim-right" data-delay="300">
+        <div class="direction-stats">
+          <div class="direction-stat">
+            <div class="direction-stat-label">公開物件数</div>
+            <div class="direction-stat-value direction-stat-value--teal"><span class="counter" data-target="1316">0</span><span style="font-size:16px;">件</span></div>
+          </div>
+          <div class="direction-stat-divider"></div>
+          <div class="direction-stat">
+            <div class="direction-stat-label">非公開物件数</div>
+            <div class="direction-stat-value direction-stat-value--blue"><span class="counter" data-target="886">0</span><span style="font-size:16px;">件</span></div>
+            <div class="direction-stat-sub">全体の約40%が非公開</div>
+          </div>
+          <div class="direction-stat-divider"></div>
+          <div class="direction-stat">
+            <div class="direction-stat-label">メルマガ施策での差別化</div>
+            <div style="font-size:13px; color:var(--sub-text); line-height:1.6; text-align:center; margin-top:4px;">非公開物件を活用した<br>個別マッチング提案</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num page-num--white">6</span>
+</div>
+
+<!-- ===========================
+     SLIDE 7: REFERRAL REQUEST
+     =========================== -->
+<div class="slide slide--referral" data-slide="6">
+  <div class="color-slide-deco color-slide-deco--1 deco-float-1"></div>
+  <div class="color-slide-deco color-slide-deco--2 deco-float-2"></div>
+  <div class="referral-content">
+    <h2 class="referral-title anim-item" data-delay="0">ご紹介のお願い</h2>
+    <p class="referral-sub anim-item" data-delay="100">顧問先ドクターへの不動産サービスのご案内にご協力ください</p>
+
+    <div class="referral-body">
+      <div class="referral-main anim-item anim-left" data-delay="200">
+        <div class="discount-card">
+          <div class="discount-card-title"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> 顧問先ドクター 優待内容</div>
+          <div class="discount-items">
+            <div class="discount-item">
+              <div class="discount-badge">50%<span style="font-size:14px;">OFF</span></div>
+              <div>
+                <div class="discount-desc">住居の賃貸仲介料</div>
+                <div class="discount-note">※ 東京23区内限定。単価を維持するため住居賃貸仲介の割引はドクター限定</div>
+              </div>
+            </div>
+            <div class="discount-item">
+              <div class="discount-badge">10%<span style="font-size:14px;">OFF</span></div>
+              <div>
+                <div class="discount-desc">不動産の購入仲介料</div>
+                <div class="discount-note">分譲マンション・戸建て等</div>
+              </div>
+            </div>
+            <div class="discount-item">
+              <div class="discount-badge">10%<span style="font-size:14px;">OFF</span></div>
+              <div>
+                <div class="discount-desc">事業用賃貸仲介料</div>
+                <div class="discount-note">クリニック開業物件・分院展開等</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="referral-side">
+        <div class="referral-fee-card shine-effect anim-item anim-right" data-delay="300">
+          <div class="referral-fee-label">ご紹介者様への送客手数料</div>
+          <div class="referral-fee-value"><span class="counter" data-target="20" data-suffix="%">0</span></div>
+          <div class="referral-fee-note">成約時の内部振替紹介料</div>
+        </div>
+        <div class="referral-target-card anim-item anim-right" data-delay="450">
+          <div class="referral-target-title">こんな先生をご紹介ください</div>
+          <div class="referral-target-list">
+            <div class="referral-target-item">分譲マンションの購入を検討中</div>
+            <div class="referral-target-item">お引越しを検討中</div>
+            <div class="referral-target-item">分院展開を検討中</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num page-num--white">7</span>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ========================================
+  // 1. SCROLL-TRIGGERED SLIDE ENTRANCE
+  // ========================================
+  const slides = document.querySelectorAll('.slide');
+  const scrollNav = document.getElementById('scrollNav');
+
+  // Create nav dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'scroll-nav-dot';
+    dot.addEventListener('click', () => {
+      slides[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    scrollNav.appendChild(dot);
+  });
+  const navDots = document.querySelectorAll('.scroll-nav-dot');
+
+  const slideObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const slide = entry.target;
+        slide.classList.add('is-visible');
+
+        // Trigger staggered child animations
+        const animItems = slide.querySelectorAll('.anim-item');
+        animItems.forEach(item => {
+          const delay = parseInt(item.dataset.delay || 0);
+          setTimeout(() => {
+            item.classList.add('is-animated');
+          }, delay + 200); // +200 for slide entrance
+        });
+
+        // Trigger counter animations
+        const counters = slide.querySelectorAll('.counter:not(.counted)');
+        counters.forEach(c => {
+          const delay = 600;
+          setTimeout(() => animateCounter(c), delay);
+        });
+
+        // Trigger progress bar
+        const progressFill = slide.querySelector('#progressFill');
+        if (progressFill) {
+          setTimeout(() => progressFill.classList.add('animate'), 800);
+        }
+
+        // Update nav
+        const idx = parseInt(slide.dataset.slide);
+        navDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, {
+    threshold: 0.3,
+    rootMargin: '0px'
+  });
+
+  slides.forEach(slide => slideObserver.observe(slide));
+
+  // ========================================
+  // 2. COUNTER ANIMATION
+  // ========================================
+  function animateCounter(el) {
+    if (el.classList.contains('counted')) return;
+    el.classList.add('counted');
+
+    const target = parseInt(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const duration = 1600;
+    const startTime = performance.now();
+
+    function easeOutExpo(t) {
+      return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+    }
+
+    function update(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = easeOutExpo(progress);
+      const current = Math.round(easedProgress * target);
+
+      el.textContent = current.toLocaleString() + suffix;
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        el.textContent = target.toLocaleString() + suffix;
+      }
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  // ========================================
+  // 3. PARALLAX BACKGROUND DECORATIONS
+  // ========================================
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        document.querySelectorAll('.deco-float-1').forEach(el => {
+          const rect = el.closest('.slide').getBoundingClientRect();
+          const offset = (rect.top / window.innerHeight) * 30;
+          el.style.transform = `translate(${-offset * 0.5}px, ${-offset}px)`;
+        });
+        document.querySelectorAll('.deco-float-2').forEach(el => {
+          const rect = el.closest('.slide').getBoundingClientRect();
+          const offset = (rect.top / window.innerHeight) * 20;
+          el.style.transform = `translate(${offset * 0.3}px, ${offset * 0.8}px)`;
+        });
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  // ========================================
+  // 4. KEYBOARD NAVIGATION
+  // ========================================
+  let currentSlide = 0;
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+      e.preventDefault();
+      currentSlide = Math.min(currentSlide + 1, slides.length - 1);
+      slides[currentSlide].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault();
+      currentSlide = Math.max(currentSlide - 1, 0);
+      slides[currentSlide].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+
+  // ========================================
+  // 5. PIPELINE ITEM TOOLTIP
+  // ========================================
+  document.querySelectorAll('.pipeline-item').forEach(item => {
+    item.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.06)';
+    });
+    item.addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1)';
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>
